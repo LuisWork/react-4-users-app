@@ -5,7 +5,7 @@ import { loginReducer } from "./auth/reducers/loginReducer"
 import Swal from "sweetalert2"
 
 const initialLogin = {
-    isAuth: 'false',
+    isAuth: false,
     user: undefined
 }
 
