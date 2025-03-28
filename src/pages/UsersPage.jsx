@@ -1,26 +1,23 @@
 import { UsersList } from '../components/UsersList'
 import { UserModalForm } from '../components/UserModalForm'
-import { useUsers } from '../hooks/useUsers'
 import "../assets/styles.css"
 
-export const UsersPage = () => {
-
-    const {
-        users,
-        userSelected,
-        initialUserForm,
-        visibleForm,
-        handlerAddUser,
-        handlerRemoveUser,
-        handlerSelectedUserForm,
-        handlerOpenForm,
-        handlerCloseForm
-    } = useUsers()
+export const UsersPage = ({
+    users,
+    userSelected,
+    initialUserForm,
+    visibleForm,
+    handlerAddUser,
+    handlerRemoveUser,
+    handlerSelectedUserForm,
+    handlerOpenForm,
+    handlerCloseForm
+}) => {
 
     return (
         <>
             {!visibleForm || <div className='open-modal animation fadeIn'>
-                <UserModalForm handlerAddUser={handlerAddUser} initialUserForm={initialUserForm} userSelected={userSelected} handlerCloseForm={handlerCloseForm}/>
+                <UserModalForm handlerAddUser={handlerAddUser} initialUserForm={initialUserForm} userSelected={userSelected} handlerCloseForm={handlerCloseForm} />
             </div>}
 
             <div className='container my-4'>

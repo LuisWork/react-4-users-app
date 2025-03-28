@@ -21,7 +21,7 @@ export const UserForm = ({ handlerAddUser, initialUserForm, userSelected, handle
 
     const onSubmit = (event) => {
         event.preventDefault()
-        if (!username || ((!password) && id === 0 )|| !email) {
+        if (!username || ((!password) && id === 0) || !email) {
             Swal.fire({
                 position: "center",
                 icon: "warning",
@@ -29,7 +29,7 @@ export const UserForm = ({ handlerAddUser, initialUserForm, userSelected, handle
                 text: "Some field on your form are empty",
                 showConfirmButton: false,
                 timer: 3000
-              });
+            });
             return
         }
         handlerAddUser(userForm)
@@ -70,7 +70,7 @@ export const UserForm = ({ handlerAddUser, initialUserForm, userSelected, handle
                 value={id}
             />
             <button className='btn btn-primary' type='submit'>{(id > 0) ? 'Edit' : 'Create'}</button>
-            <button className='btn btn-dark mx-2' onClick={() => onCloseForm()} type="button">Close</button>
+            {!handlerCloseForm || <button className='btn btn-dark mx-2' onClick={() => onCloseForm()} type="button">Close</button>}
         </form>
     )
 }
