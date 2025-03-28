@@ -37,8 +37,8 @@ export const LoginPage = ({ handlerLogin }) => {
                     </div>
                     <form onSubmit={onSubmit}>
                         <div className="modal-body">
-                            <input type="text" className="form-control my-3 w-75" placeholder='Username' name='username' autoComplete='off' value={username} onChange={onInputChange} />
-                            <input type="password" className="form-control my-3 w-75" placeholder='Password' name='password' autoComplete='off' value={password} onChange={onInputChange} />
+                            <input type="text" className="form-control my-3 w-75 mx-5" placeholder='Username' name='username' autoComplete='off' value={username} onChange={onInputChange} />
+                            <input type="password" className="form-control my-3 w-75 mx-5" placeholder='Password' name='password' autoComplete='off' value={password} onChange={onInputChange} />
                         </div>
                         <div className="modal-footer">
                             <button type="submit" className="btn btn-primary">Login</button>
