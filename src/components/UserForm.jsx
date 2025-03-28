@@ -32,6 +32,19 @@ export const UserForm = ({ handlerAddUser, initialUserForm, userSelected, handle
             });
             return
         }
+
+        if(!email.includes('@')) {
+            Swal.fire({
+                position: "center",
+                icon: "warning",
+                title: "Email error",
+                text: "Email invalid format",
+                showConfirmButton: false,
+                timer: 3000
+            });
+            return
+        }
+
         handlerAddUser(userForm)
         setUserForm(initialUserForm)
     }
