@@ -1,23 +1,21 @@
 import { UsersList } from '../components/UsersList'
 import { UserModalForm } from '../components/UserModalForm'
 import "../assets/styles.css"
+import { useContext } from 'react'
+import { UserContext } from '../context/userContext'
 
-export const UsersPage = ({
-    users,
-    userSelected,
-    initialUserForm,
-    visibleForm,
-    handlerAddUser,
-    handlerRemoveUser,
-    handlerSelectedUserForm,
-    handlerOpenForm,
-    handlerCloseForm
-}) => {
+export const UsersPage = () => {
+
+    const {
+        users,
+        visibleForm,
+        handlerOpenForm,
+    } = useContext(UserContext)
 
     return (
         <>
             {!visibleForm || <div className='open-modal animation fadeIn'>
-                <UserModalForm handlerAddUser={handlerAddUser} initialUserForm={initialUserForm} userSelected={userSelected} handlerCloseForm={handlerCloseForm} />
+                <UserModalForm />
             </div>}
 
             <div className='container my-4'>
@@ -28,7 +26,7 @@ export const UsersPage = ({
                         {(users.length === 0) ? (
                             <p className='alert alert-info'>No users data...</p>
                         ) : (
-                            <UsersList users={users} handlerRemoveUser={handlerRemoveUser} handlerSelectedUserForm={handlerSelectedUserForm} />
+                            <UsersList />
                         )}
                     </div>
                 </div>

@@ -1,10 +1,11 @@
-import React, { useEffect, useState } from 'react'
+import React, { useContext, useEffect, useState } from 'react'
 import Swal from 'sweetalert2'
+import { UserContext } from '../context/userContext'
 
-export const UserForm = ({ handlerAddUser, initialUserForm, userSelected, handlerCloseForm }) => {
+export const UserForm = ({ userSelected, handlerCloseForm }) => {
 
+    const { initialUserForm, handlerAddUser } = useContext(UserContext)
     const [userForm, setUserForm] = useState(initialUserForm)
-
     const { id, username, password, email } = userForm
 
     useEffect(() => {

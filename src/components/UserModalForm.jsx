@@ -1,7 +1,11 @@
-import React from 'react'
+import React, { useContext } from 'react'
 import { UserForm } from './UserForm'
+import { UserContext } from '../context/userContext'
 
-export const UserModalForm = ({ handlerAddUser, initialUserForm, userSelected, handlerCloseForm }) => {
+export const UserModalForm = () => {
+
+    const { userSelected, handlerCloseForm } = useContext(UserContext)
+
     return (
         <div className='modal' style={{ display: "block" }} tabIndex={'-1'}>
             <div className='modal-dialog' role='document'>
@@ -12,7 +16,7 @@ export const UserModalForm = ({ handlerAddUser, initialUserForm, userSelected, h
                         </h5>
                     </div>
                     <div className="modal-body">
-                        <UserForm handlerAddUser={handlerAddUser} initialUserForm={initialUserForm} userSelected={userSelected} handlerCloseForm={handlerCloseForm} />
+                        <UserForm userSelected={userSelected} handlerCloseForm={handlerCloseForm} />
                     </div>
                 </div>
             </div>
