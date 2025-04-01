@@ -1,7 +1,7 @@
 import { UsersList } from '../components/UsersList'
 import { UserModalForm } from '../components/UserModalForm'
 import "../assets/styles.css"
-import { useContext } from 'react'
+import { useContext, useEffect } from 'react'
 import { UserContext } from '../context/userContext'
 
 export const UsersPage = () => {
@@ -10,7 +10,12 @@ export const UsersPage = () => {
         users,
         visibleForm,
         handlerOpenForm,
+        getUsers,
     } = useContext(UserContext)
+
+    useEffect(() => {
+        getUsers()
+    }, [])
 
     return (
         <>
