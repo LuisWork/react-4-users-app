@@ -15,26 +15,26 @@ export const findAll = async () => {
 export const save = async ({ username, email, password }) => {
     try {
         return await axios.post(BASE_URL, {
-            username, 
-            email, 
+            username,
+            email,
             password
         })
     } catch (error) {
-        console.error(error)
+        throw error
     }
-    return undefined
+
 }
 
 export const update = async ({ id, username, email }) => {
     try {
         return await axios.put(`${BASE_URL}/${id}`, {
             username,
-            email
+            email,
+            //password: 'nothing'
         })
     } catch (error) {
-        console.error(error)
+        throw error
     }
-    return undefined
 }
 
 export const remove = async (id) => {

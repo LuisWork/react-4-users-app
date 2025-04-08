@@ -4,7 +4,7 @@ import { UserContext } from '../context/userContext'
 
 export const UserForm = ({ userSelected, handlerCloseForm }) => {
 
-    const { initialUserForm, handlerAddUser } = useContext(UserContext)
+    const { initialUserForm, handlerAddUser, errors } = useContext(UserContext)
     const [userForm, setUserForm] = useState(initialUserForm)
     const { id, username, password, email } = userForm
 
@@ -22,6 +22,7 @@ export const UserForm = ({ userSelected, handlerCloseForm }) => {
 
     const onSubmit = (event) => {
         event.preventDefault()
+        /*
         if (!username || ((!password) && id === 0) || !email) {
             Swal.fire({
                 position: "center",
@@ -45,9 +46,10 @@ export const UserForm = ({ userSelected, handlerCloseForm }) => {
             });
             return
         }
+        */
 
         handlerAddUser(userForm)
-        setUserForm(initialUserForm)
+        //setUserForm(initialUserForm)
     }
 
     const onCloseForm = () => {
@@ -63,14 +65,18 @@ export const UserForm = ({ userSelected, handlerCloseForm }) => {
                 value={username}
                 onChange={onInputChange}
                 autoComplete='off' />
+            <p className='text-danger'>{errors?.username}</p>
             {(id > 0) || (
-                <input className='form-control my-3 w-75'
-                    placeholder='Password'
-                    name='password'
-                    value={password}
-                    type='password'
-                    onChange={onInputChange}
-                    autoComplete='off' />
+                <>
+                    <input className='form-control my-3 w-75'
+                        placeholder='Password'
+                        name='password'
+                        value={password}
+                        type='password'
+                        onChange={onInputChange}
+                        autoComplete='off' />
+                    <p className='text-danger'>{errors?.password}</p>
+                </>
             )}
 
             <input className='form-control my-3 w-75'
@@ -79,6 +85,7 @@ export const UserForm = ({ userSelected, handlerCloseForm }) => {
                 value={email}
                 onChange={onInputChange}
                 autoComplete='off' />
+            <p className='text-danger'>{errors?.email}</p>
             <input type="hidden"
                 name="id"
                 value={id}

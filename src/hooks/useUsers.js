@@ -13,11 +13,18 @@ const initialUserForm = {
     email: ''
 }
 
+const initialErrors = {
+    username: '',
+    password: '',
+    email: ''
+}
+
 export const useUsers = () => {
 
     const [users, dispatch] = useReducer(usersReducer, initialUsers)
     const [userSelected, setUserSelected] = useState(initialUserForm)
     const [visibleForm, setVisibleForm] = useState(false)
+    const [errors, setErrors] = useState(initialErrors)
     const navigate = useNavigate()
 
     const getUsers = async () => {
@@ -32,23 +39,31 @@ export const useUsers = () => {
 
         let response
 
-        if(user.id === 0) {
-            response = await save(user)
-        } else {
-            response = await update(user)
-        }
+        try {
+            if (user.id === 0) {
+                response = await save(user)
+            } else {
+                response = await update(user)
+            }
 
-        dispatch({
-            type: (user.id === 0) ? 'addUser' : 'updateUser',
-            payload: response.data
-        })
-        Swal.fire(
-            (user.id === 0) ? 'User created!' : 'User updated',
-            (user.id === 0) ? 'The user has been created successfully' : 'The user has been updated successfully',
-            'success'
-          );
-          handlerCloseForm()
-          navigate('/users')
+            dispatch({
+                type: (user.id === 0) ? 'addUser' : 'updateUser',
+                payload: response.data
+            })
+            Swal.fire(
+                (user.id === 0) ? 'User created!' : 'User updated',
+                (user.id === 0) ? 'The user has been created successfully' : 'The user has been updated successfully',
+                'success'
+            );
+            handlerCloseForm()
+            navigate('/users')
+        } catch (error) {
+            if (error.response && error.response.status == 400) {
+                setErrors(error.response.data)
+            } else {
+                throw error
+            }
+        }
     }
 
     const handlerRemoveUser = (id) => {
@@ -60,26 +75,26 @@ export const useUsers = () => {
             confirmButtonColor: "#3085d6",
             cancelButtonColor: "#d33",
             confirmButtonText: "Yes, delete it!"
-          }).then((result) => {
+        }).then((result) => {
             if (result.isConfirmed) {
                 remove(id)
                 dispatch({
                     type: 'removeUser',
                     payload: id
                 })
-              Swal.fire({
-                title: "User deleted!",
-                text: "The user has been remove successfully!",
-                icon: "success"
-              });
+                Swal.fire({
+                    title: "User deleted!",
+                    text: "The user has been remove successfully!",
+                    icon: "success"
+                });
             }
-          });
+        });
 
     }
 
     const handlerSelectedUserForm = (user) => {
         setVisibleForm(true)
-        setUserSelected({...user})
+        setUserSelected({ ...user })
     }
 
     const handlerOpenForm = () => {
@@ -89,6 +104,7 @@ export const useUsers = () => {
     const handlerCloseForm = () => {
         setVisibleForm(false)
         setUserSelected(initialUserForm)
+        setErrors({})
     }
 
     return {
@@ -96,6 +112,7 @@ export const useUsers = () => {
         userSelected,
         initialUserForm,
         visibleForm,
+        errors,
         handlerAddUser,
         handlerRemoveUser,
         handlerSelectedUserForm,
