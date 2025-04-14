@@ -6,6 +6,7 @@ import { useNavigate } from "react-router-dom"
 
 const initialLogin = JSON.parse(sessionStorage.getItem('login')) || {
     isAuth: false,
+    isAdmin: false,
     user: undefined
 }
 
@@ -19,18 +20,31 @@ export const useAuth = () => {
         try {
             const response = await loginUser({ username, password })
             const token = response.data.token
-            const user = { username: response.data.username }
+            const claims = JSON.parse(windows.atob(token.split(".")[1]))
+            const user = { username: claims.username }
             dispatch({
                 type: 'login',
-                payload: user
+                payload: {
+                    user,
+                    isAdmin:
+                        claims.isAdmin
+                }
             })
             sessionStorage.setItem('login', JSON.stringify({
                 isAuth: true,
-                user
+                isAdmin: claims.isAdmin,
+                user,
             }))
+            sessionStorage.setItem('token', `Bearer ${token}`)
             navigate('/users')
         } catch (error) {
-            Swal.fire('Login error', 'Username or Password invalid', 'error')
+            if (error.response?.status == 401) {
+                Swal.fire('Login error', 'Username or Password invalid', 'error')
+            } else if (error.response?.status == 403) {
+                Swal.fire('Login error', 'No access for this resource', 'error')
+            } else {
+                throw error
+            }
         }
     }
 
@@ -39,6 +53,8 @@ export const useAuth = () => {
             type: 'logout'
         })
         sessionStorage.removeItem('login')
+        sessionStorage.removeItem('token')
+        sessionStorage.clear()
     }
 
     return {
