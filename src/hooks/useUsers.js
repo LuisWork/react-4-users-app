@@ -101,7 +101,6 @@ export const useUsers = () => {
                 });
             }
         });
-
     }
 
     const handlerSelectedUserForm = (user) => {
