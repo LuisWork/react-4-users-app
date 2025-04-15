@@ -32,11 +32,17 @@ export const useUsers = () => {
     const navigate = useNavigate()
 
     const getUsers = async () => {
-        const result = await findAll()
-        dispatch({
-            type: 'loadingUsers',
-            payload: result.data
-        })
+        try {
+            const result = await findAll()
+            dispatch({
+                type: 'loadingUsers',
+                payload: result.data
+            })
+        } catch (error) {
+            if (error.response?.status == 401) {
+                handlerLogout()
+            }
+        }
     }
 
     const handlerAddUser = async (user) => {

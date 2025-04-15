@@ -69,6 +69,7 @@ export const UserForm = ({ userSelected, handlerCloseForm }) => {
                 autoComplete='off' />
             <p className='text-danger'>{errors?.email}</p>
             <div className='my-3 form-check'>
+                <label className='form-check-label'>Administrator</label>
                 <input type="checkbox" name="admin" checked={admin} className='form-check-input' onChange={onCheckBoxChange} />
             </div>
             <input type="hidden"
