@@ -4,8 +4,12 @@ import { UsersPage } from '../pages/UsersPage'
 import NavBar from '../components/layout/NavBar'
 import RegisterPage from '../pages/RegisterPage'
 import { UserProvider } from '../context/userProvider'
+import { AuthContext } from '../auth/context/AuthContext'
+import { useContext } from 'react'
 
 const UserRoutes = () => {
+
+  const { login } = useContext(AuthContext)
 
   return (
     <>
@@ -13,8 +17,12 @@ const UserRoutes = () => {
         <NavBar />
         <Routes>
           <Route path="users" element={<UsersPage />} />
-          <Route path="users/register" element={<RegisterPage />} />
-          <Route path="users/edit/:id" element={<RegisterPage />} />
+          {!login.isAdmin ||
+            <>
+              <Route path="users/register" element={<RegisterPage />} />
+              <Route path="users/edit/:id" element={<RegisterPage />} />
+            </>
+          }
           <Route path="/" element={<Navigate to="/users" />} />
         </Routes>
       </UserProvider>

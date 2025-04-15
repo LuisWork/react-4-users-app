@@ -6,7 +6,8 @@ export const UserForm = ({ userSelected, handlerCloseForm }) => {
 
     const { initialUserForm, handlerAddUser, errors } = useContext(UserContext)
     const [userForm, setUserForm] = useState(initialUserForm)
-    const { id, username, password, email } = userForm
+    const [checked, setChecked] = useState(userForm.admin)
+    const { id, username, password, email, admin } = userForm
 
     useEffect(() => {
         setUserForm({ ...userSelected, password: '' })
@@ -22,39 +23,20 @@ export const UserForm = ({ userSelected, handlerCloseForm }) => {
 
     const onSubmit = (event) => {
         event.preventDefault()
-        /*
-        if (!username || ((!password) && id === 0) || !email) {
-            Swal.fire({
-                position: "center",
-                icon: "warning",
-                title: "Validation warning!...",
-                text: "Some field on your form are empty",
-                showConfirmButton: false,
-                timer: 3000
-            });
-            return
-        }
-
-        if(!email.includes('@')) {
-            Swal.fire({
-                position: "center",
-                icon: "warning",
-                title: "Email error",
-                text: "Email invalid format",
-                showConfirmButton: false,
-                timer: 3000
-            });
-            return
-        }
-        */
-
         handlerAddUser(userForm)
-        //setUserForm(initialUserForm)
     }
 
     const onCloseForm = () => {
         handlerCloseForm()
         setUserForm(initialUserForm)
+    }
+
+    const onCheckBoxChange = () => {
+        setChecked(!checked)
+        setUserForm({
+            ...userForm,
+            admin: checked,
+        })
     }
 
     return (
@@ -86,6 +68,9 @@ export const UserForm = ({ userSelected, handlerCloseForm }) => {
                 onChange={onInputChange}
                 autoComplete='off' />
             <p className='text-danger'>{errors?.email}</p>
+            <div className='my-3 form-check'>
+                <input type="checkbox" name="admin" checked={admin} className='form-check-input' onChange={onCheckBoxChange} />
+            </div>
             <input type="hidden"
                 name="id"
                 value={id}

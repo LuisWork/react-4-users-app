@@ -3,6 +3,8 @@ import { usersReducer } from "../reducers/usersReducer"
 import Swal from "sweetalert2"
 import { useNavigate } from "react-router-dom"
 import { findAll, remove, save, update } from "../services/userService"
+import { useContext } from "react"
+import { AuthContext } from "../auth/context/AuthContext"
 
 const initialUsers = []
 
@@ -10,7 +12,8 @@ const initialUserForm = {
     id: 0,
     username: '',
     password: '',
-    email: ''
+    email: '',
+    admin: false
 }
 
 const initialErrors = {
@@ -21,6 +24,7 @@ const initialErrors = {
 
 export const useUsers = () => {
 
+    const { login, handlerLogout } = useContext(AuthContext)
     const [users, dispatch] = useReducer(usersReducer, initialUsers)
     const [userSelected, setUserSelected] = useState(initialUserForm)
     const [visibleForm, setVisibleForm] = useState(false)
@@ -36,6 +40,8 @@ export const useUsers = () => {
     }
 
     const handlerAddUser = async (user) => {
+
+        if (!login.isAdmin) return
 
         let response
 
@@ -72,6 +78,8 @@ export const useUsers = () => {
                         email: 'El email ya existe'
                     })
                 }
+            } else if (error.response.status == 401) {
+                handlerLogout()
             } else {
                 throw error
             }
@@ -79,6 +87,7 @@ export const useUsers = () => {
     }
 
     const handlerRemoveUser = (id) => {
+        if (!login.isAdmin) return
         Swal.fire({
             title: "Are you sure?",
             text: "You won't be able to revert this!",
@@ -87,18 +96,25 @@ export const useUsers = () => {
             confirmButtonColor: "#3085d6",
             cancelButtonColor: "#d33",
             confirmButtonText: "Yes, delete it!"
-        }).then((result) => {
+        }).then(async (result) => {
             if (result.isConfirmed) {
-                remove(id)
-                dispatch({
-                    type: 'removeUser',
-                    payload: id
-                })
-                Swal.fire({
-                    title: "User deleted!",
-                    text: "The user has been remove successfully!",
-                    icon: "success"
-                });
+                try {
+
+                    await remove(id)
+                    dispatch({
+                        type: 'removeUser',
+                        payload: id
+                    })
+                    Swal.fire({
+                        title: "User deleted!",
+                        text: "The user has been remove successfully!",
+                        icon: "success"
+                    });
+                } catch (error) {
+                    if (error.response.status == 401) {
+                        handlerLogout()
+                    }
+                }
             }
         });
     }

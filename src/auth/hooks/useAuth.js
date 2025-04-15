@@ -20,8 +20,8 @@ export const useAuth = () => {
         try {
             const response = await loginUser({ username, password })
             const token = response.data.token
-            const claims = JSON.parse(windows.atob(token.split(".")[1]))
-            const user = { username: claims.username }
+            const claims = JSON.parse(window.atob(token.split(".")[1]))
+            const user = { username: claims.sub }
             dispatch({
                 type: 'login',
                 payload: {
