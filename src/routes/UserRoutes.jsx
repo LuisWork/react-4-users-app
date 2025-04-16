@@ -4,11 +4,11 @@ import { UsersPage } from '../pages/UsersPage'
 import NavBar from '../components/layout/NavBar'
 import RegisterPage from '../pages/RegisterPage'
 import { AuthContext } from '../auth/context/AuthContext'
-import { useContext } from 'react'
+import { useAuth } from '../auth/hooks/useAuth'
 
 const UserRoutes = () => {
 
-  const { login } = useContext(AuthContext)
+  const { login } = useAuth(AuthContext)
 
   return (
     <>

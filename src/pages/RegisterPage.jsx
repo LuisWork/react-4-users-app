@@ -6,7 +6,9 @@ import { useUsers } from '../hooks/useUsers'
 const RegisterPage = () => {
 
     const { users = [], initialUserForm } = useUsers()
+
     const [userSelected, setUserSelected] = useState(initialUserForm)
+    
     const { id } = useParams()
 
     useEffect(() => {
