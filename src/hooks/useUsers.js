@@ -1,14 +1,13 @@
 import Swal from "sweetalert2"
 import { useNavigate } from "react-router-dom"
 import { findAll, remove, save, update } from "../services/userService"
-import { useContext } from "react"
-import { AuthContext } from "../auth/context/AuthContext"
 import { useDispatch, useSelector } from "react-redux"
-import { addUser, initialUserForm, loadingError, loadingUsers, onOpenForm, onUserSelectedForm, removeUser, updateUser } from "../store/slices/users/userSlice"
+import { addUser, initialUserForm, loadingError, loadingUsers, onCloseForm, onOpenForm, onUserSelectedForm, removeUser, updateUser } from "../store/slices/users/userSlice"
+import { useAuth } from "../auth/hooks/useAuth"
 
 export const useUsers = () => {
 
-    const { login, handlerLogout } = useContext(AuthContext)
+    const { login, handlerLogout } = useAuth()
 
     const { users, userSelected, visibleForm, errors } = useSelector(state => state.users)
 
@@ -64,7 +63,7 @@ export const useUsers = () => {
                 if (error.response.data?.message?.includes('UK_email')) {
                     dispatch(loadingError(error.response.data))
                 }
-            } else if (error.response.status == 401) {
+            } else if (error.response?.status == 401) {
                 handlerLogout()
             } else {
                 throw error
@@ -103,7 +102,7 @@ export const useUsers = () => {
     }
 
     const handlerSelectedUserForm = (user) => {
-        dispatch(onUserSelectedForm({...user}))
+        dispatch(onUserSelectedForm({ ...user }))
     }
 
     const handlerOpenForm = () => {
