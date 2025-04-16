@@ -23,9 +23,9 @@ export const UsersPage = () => {
 
     if (isLoading) {
         return (
-            <div className='container my-4'>
-                <div className="spinner-border text-light" role="status">
-                    <span className="visually-hidden">Loading...</span>
+            <div className="d-flex justify-content-center align-items-center vh-100">
+                <div className="spinner-border text-dark" style={{ width: '4rem', height: '4rem' }} role="status">
+                    <span className="visually-hidden">Cargando...</span>
                 </div>
             </div>
         )
