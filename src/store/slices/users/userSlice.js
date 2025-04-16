@@ -1,34 +1,69 @@
 import { createSlice } from '@reduxjs/toolkit'
 
+export const initialUserForm = {
+    id: 0,
+    username: '',
+    password: '',
+    email: '',
+    admin: false
+}
+
+const initialErrors = {
+    username: '',
+    password: '',
+    email: ''
+}
+
 export const usersSlice = createSlice({
     name: 'users',
     initialState: {
         users: [],
+        userSelected: initialUserForm,
+        visibleForm: false,
+        errors: initialErrors
     },
     reducers: {
-        addUser: (state, action) => {
+        addUser: (state, { payload }) => {
             state.users = [
                 ...state.users,
                 {
-                    ...action.payload,
+                    ...payload,
                 }
             ]
+            state.userSelected = initialUserForm
+            state.visibleForm = false
         },
-        removeUser: (state, action) => {
-            state.users = state.users.filter(user => user.id !== action.payload)
+        removeUser: (state, { payload }) => {
+            state.users = state.users.filter(user => user.id !== payload)
         },
-        updateUser: (state, action) => {
+        updateUser: (state, { payload }) => {
             state.users = state.users.map(user => {
-                if (user.id === action.payload.id) {
+                if (user.id === payload.id) {
                     return {
-                        ...action.payload,
+                        ...payload,
                     }
                 }
                 return user
             })
+            state.userSelected = initialUserForm
+            state.visibleForm = false
         },
-        loadingUsers: (state, action) => {
-            state.users = action.payload
+        loadingUsers: (state, { payload }) => {
+            state.users = payload
+        },
+        onUserSelectedForm: (state, { payload }) => {
+            state.userSelected = payload
+            state.visibleForm = true
+        },
+        onOpenForm: (state) => {
+            state.visibleForm = true
+        },
+        onCloseForm: (state) => {
+            state.visibleForm = false
+            state.userSelected = initialUserForm
+        },
+        loadingError: (state, { payload }) => {
+            state.errors = payload
         }
     }
 })
@@ -37,5 +72,9 @@ export const {
     addUser,
     removeUser,
     updateUser,
-    loadingUsers
+    loadingUsers,
+    onUserSelectedForm,
+    onOpenForm,
+    onCloseForm,
+    loadingError
 } = usersSlice.actions

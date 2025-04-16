@@ -1,12 +1,13 @@
 import React, { useContext } from 'react'
 import { NavLink } from 'react-router-dom'
-import { UserContext } from '../context/userContext'
 import { AuthContext } from '../auth/context/AuthContext'
+import { useUsers } from '../hooks/useUsers'
 
 export const UserRow = ({ id, username, email, admin }) => {
 
     const { login } = useContext(AuthContext)
-    const { handlerRemoveUser, handlerSelectedUserForm } = useContext(UserContext)
+
+    const { handlerRemoveUser, handlerSelectedUserForm } = useUsers()
 
     return (
         <tr>

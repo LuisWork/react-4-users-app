@@ -1,10 +1,10 @@
-import React, { useContext } from 'react'
+import React from 'react'
 import { UserForm } from './UserForm'
-import { UserContext } from '../context/userContext'
+import { useUsers } from '../hooks/useUsers'
 
 export const UserModalForm = () => {
 
-    const { userSelected, handlerCloseForm } = useContext(UserContext)
+    const { userSelected, handlerCloseForm } = useUsers()
 
     return (
         <div className='modal' style={{ display: "block" }} tabIndex={'-1'}>
